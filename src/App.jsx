@@ -1,35 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import './App.css';
+import { useState, React, useEffect } from 'react';
+import axios from 'axios';
+import EditTodo from './components/Todo';
+import List from './components/List';
 
-function App() {
-  const [count, setCount] = useState(0)
+import { MdAdd } from "react-icons/md";
+import { FcCheckmark } from "react-icons/fc";
+import { MdEdit } from "react-icons/md";
+import { FaTrash } from "react-icons/fa";
+
+const apiURL = process.env.REACT_APP_API_URL;
+//console.log(`API URL: ${apiURL}`);
+
+function TodoList() {
+  const [todos, setTodos] = useState([]);
+  const [todoInput, setTodoInput] = useState('');
+  const [editTodo, setEditTodo] = useState(null);
+
+  useEffect(() => {
+    axios.get(`${apiURL}/todos2`)
+    .then(response => {
+      setTodos(response.data);
+    })
+  }, []);
+
+  function addTodo() {}
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div>
+      <h1>Todo List</h1>
+    </div>
   )
 }
 
-export default App
+export default TodoList
