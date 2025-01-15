@@ -3,14 +3,15 @@ import { useState, React, useEffect } from 'react';
 import axios from 'axios';
 import CompletedList from './components/CompletedList';
 import EditTodo from './components/Edit';
+import OverdueList from './components/OverdueList';
 
 const apiURL = import.meta.env.VITE_API_URL;
 console.log(`API URL: ${apiURL}`);
 
-
 function TodoList() {
   const [todos, setTodos] = useState([]);
   const [todoInput, setTodoInput] = useState('');
+  const [dueDate, setDueDate] = useState('');
   const [editId, setEditId] = useState(null);
 
   useEffect(() => { // This is the code that gets the todos from the database
@@ -22,6 +23,10 @@ function TodoList() {
 
   function addTodo(e) {
     setTodoInput(e.target.value);
+  }
+
+  function addDueDate(e) {
+    setDueDate(e.target.value);
   }
 
   function submitTodo(e) {
@@ -40,12 +45,14 @@ function TodoList() {
       id: todos.length + 1,
       name: todoInput.trim(),
       completed: false,
+      dueDate: dueDate.trim(),
     }
     
     axios.post(`${apiURL}/todos`, newTodo)
     .then(response => {
       setTodos([...todos, response.data]);
       setTodoInput('');
+      setDueDate('');
     })
   }
 
@@ -125,6 +132,7 @@ function TodoList() {
       <h1>Todo List</h1>
       <form onSubmit={submitTodo}>
         <input type="text" value={todoInput} onChange={addTodo} />
+        <input type="date" value={dueDate} onChange={addDueDate} />
         <button type="submit">Add Todo</button>
       </form>
       <h5>Incompleted</h5>
@@ -135,7 +143,7 @@ function TodoList() {
               <EditTodo todo={todo} onSave={updateTodo} onCancel={() => setEditId(null)} />
             ) : (
               <>
-                {todo.name}
+                {todo.name} - Due: {todo.dueDate}
                 <button onClick={() => setEditId(todo.id)}>Edit</button>
                 <button onClick={() => deleteTodo(todo.id)}>Delete</button>
                 <button onClick={() => completeTodo(todo.id)}>Complete</button>
@@ -145,6 +153,7 @@ function TodoList() {
         ))}
       </ul>
       <CompletedList todos={todos} deleteTodo={deleteTodo} undoCompletedTodo={undoCompletedTodo} />
+      <OverdueList todos={todos} />
     </div>
   )
 }
