@@ -1,62 +1,44 @@
 import './App.css';
 import { useState, React, useEffect } from 'react';
 import axios from 'axios';
-import EditTodo from './components/Todo';
-import List from './components/List';
 
-import { MdAdd } from "react-icons/md";
-import { FcCheckmark } from "react-icons/fc";
-import { MdEdit } from "react-icons/md";
-import { FaTrash } from "react-icons/fa";
-
-const apiURL = process.env.REACT_APP_API_URL;
-//console.log(`API URL: ${apiURL}`);
-
-function TodoList() {
+function App() {
   const [todos, setTodos] = useState([]);
   const [todoInput, setTodoInput] = useState('');
   const [editTodo, setEditTodo] = useState(null);
 
-  useEffect(() => {
-    axios.get(`${apiURL}/todos2`)
-    .then(response => {
-      setTodos(response.data);
-    })
-  }, []);
+  // useEffect(() => {
+  //   axios.get(`${apiURL}/todos2`)
+  //   .then(response => {
+  //     setTodos(response.data);
+  //   })
+  // }, []);
 
-  function addTodo(e) {
-    todoInput(e.target.value);
-  }
-
-  function submitTodo(e) {
+  function handleSubmit(e) {
     e.preventDefault();
-
     if (!todoInput.trim()) return;
 
-    if (Array.isArray(todos)) {
-      const todoExists = todos.some(todo => todo.name.toLowerCase() === todoInput.trim().toLowerCase());
-      if (todoExists) {
-        alert('This already exists in your list');
-        return;
-      }
-    }
+    if (Array.isArray(todos) ? todos.some(todo => todo.name.toLowerCase() === todoInput.trim().toLowerCase()): null) {
+      alert('This already exists in your list');
+      return;
+    };
 
     const newTodo = {
       id: todos.length + 1,
       name: todoInput.trim(),
-      completed: false
+      completed: false,
     }
 
-    axios.post(`${apiURL}/todos2`, newTodo)
-    .then(response => {
-      setTodos([...todos, response.data]);
-      setTodoInput('');
-    })
+    axios.post(`${baseUrl}/todos`, newTodo)
+      .then((response) => {
+        setTodos([...todos, response.data]);
+        todoInput('');
+      });
   }
 
   if (!todos) return "No post!";
 
-  const deleteTodo = (id) => {
+  const handleDelete = (id) => {
     const newTodos = [...todos].filter(todo => {
       if (todo.id === id) {
         return false;
@@ -65,44 +47,44 @@ function TodoList() {
       }
     });
 
-    axios.delete(`${apiURL}/todos2/${id}`)
-    .then(() => {
-      setTodos(newTodos);
-    })
+    axios.delete(`${baseUrl}/todos/${id}`)
+      .then(() => {
+        setTodos(newTodos);
+      });
   }
 
-  const updateTodo = (id, name) => {
+  const handleUpdate = (id, name) => {
     const newTodos = [...todos].map(todo => {
       if (todo.id === id) {
-        return { ...todo, name };
+        return { ...todo, name: name };
       } else {
         return todo;
       }
-    });
-
-    axios.put(`${apiURL}/todos2/${id}`, { name })
-    .then(() => {
-      setTodos(newTodos);
-      setEditTodo(null);
     })
+
+    axios.put(`${baseUrl}/${id}`, { name: name })
+      .then(() => {
+        setTodos(newTodos);
+        setEditTodo(null);
+      });
   }
 
-  const completeTodo = (id) => {
+  const handleComplete = (id) => {
     const newTodos = [...todos].map(todo => {
       if (todo.id === id) {
         return { ...todo, completed: true };
       } else {
         return todo;
       }
-    });
-
-    axios.put(`${apiURL}/todos2/${id}`, { completed: true })
-    .then(() => {
-      setTodos(newTodos);
     })
-  }
 
-  const incompleteTodo = todos.filter(todo => {
+    axios.put(`${baseUrl}/${id}`, { completed: true })
+      .then(() => {
+        setTodos(newTodos);
+      });
+  };
+
+  const incomplete = todos.filter(todo => {
     if (todo.completed === false) {
       return true;
     } else {
@@ -110,48 +92,26 @@ function TodoList() {
     }
   })
 
-  const undoCompleteTodo = (id) => {
+  const handleUndo = (id) => {
     const newTodos = [...todos].map(todo => {
       if (todo.id === id) {
         return { ...todo, completed: false };
       } else {
         return todo;
       }
-    });
-
-    axios.put(`${apiURL}/todos2/${id}`, { completed: false })
-    .then(() => {
-      setTodos(newTodos);
     })
+    
+    axios.put(`${baseUrl}/${id}`, { completed: false })
+      .then(() => {
+        setTodos(newTodos);
+      });
   }
 
   return (
     <div>
       <h1>Todo List</h1>
-      <form onSubmit={submitTodo}>
-        <input type="text" value={todoInput} onChange={addTodo} />
-        <button><MdAdd /></button>
-      </form>
-      <h5>Incompleted</h5>
-      <ul>
-        {incompleteTodo.map(todo => (
-          <li key={todo.id}>
-            {editTodo === todo.id ? (
-              <EditTodo todo={todo} onEdit={updateTodo} onCancel={() => setEditTodo(null)} />
-            ) : (
-              <>
-              {todo.name}
-              <button onClick={() => setEditTodo(todo.id)}><MdEdit /></button>
-              <button onClick={() => deleteTodo(todo.id)}><FaTrash /></button>
-              <button onClick={() => completeTodo(todo.id)}><FcCheckmark /></button>
-              </>
-            )}
-          </li>
-        ))}
-      </ul>
-      <List todos={todos} onDelete={deleteTodo} onIncomplete={undoCompleteTodo} />
     </div>
   )
 }
 
-export default TodoList;
+export default App;
