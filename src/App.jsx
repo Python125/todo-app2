@@ -24,7 +24,68 @@ function TodoList() {
     })
   }, []);
 
-  function addTodo() {}
+  function addTodo(e) {
+    todoInput(e.target.value);
+  }
+
+  function submitTodo(e) {
+    e.preventDefault();
+
+    if (!todoInput.trim()) return;
+
+    if (Array.isArray(todos)) {
+      const todoExists = todos.some(todo => todo.name.toLowerCase() === inputValue.trim().toLowerCase());
+      if (todoExists) {
+        alert('This already exists in your list');
+        return;
+      }
+    }
+
+    const newTodo = {
+      id: todos.length + 1,
+      name: todoInput.trim(),
+      completed: false
+    }
+
+    axios.post(`${apiURL}/todos2`, newTodo)
+    .then(response => {
+      setTodos([...todos, response.data]);
+      setTodoInput('');
+    })
+  }
+
+  if (!todos) return "No post!";
+
+  const deleteTodo = (id) => {
+    const newTodos = [...todos].filter(todo => {
+      if (todo.id === id) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+
+    axios.delete(`${apiURL}/todos2/${id}`)
+    .then(() => {
+      setTodos(newTodos);
+    })
+  }
+
+  const updateTodo = (id, name) => {
+    const newTodos = [...todos].map(todo => {
+      if (todo.id === id) {
+        return { ...todo, name };
+      } else {
+        return todo;
+      }
+    });
+
+    axios.put(`${apiURL}/todos2/${id}`, { name })
+    .then(() => {
+      setTodos(newTodos);
+      setEditTodo(null);
+    })
+  }
 
   return (
     <div>
