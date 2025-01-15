@@ -87,6 +87,44 @@ function TodoList() {
     })
   }
 
+  const completeTodo = (id) => {
+    const newTodos = [...todos].map(todo => {
+      if (todo.id === id) {
+        return { ...todo, completed: true };
+      } else {
+        return todo;
+      }
+    });
+
+    axios.put(`${apiURL}/todos2/${id}`, { completed: true })
+    .then(() => {
+      setTodos(newTodos);
+    })
+  }
+
+  const incompleteTodo = todos.filter(todo => {
+    if (todo.completed === false) {
+      return true;
+    } else {
+      return false;
+    }
+  })
+
+  const undoCompleteTodo = (id) => {
+    const newTodos = [...todos].map(todo => {
+      if (todo.id === id) {
+        return { ...todo, completed: false };
+      } else {
+        return todo;
+      }
+    });
+
+    axios.put(`${apiURL}/todos2/${id}`, { completed: false })
+    .then(() => {
+      setTodos(newTodos);
+    })
+  }
+
   return (
     <div>
       <h1>Todo List</h1>
