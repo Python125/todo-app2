@@ -8,7 +8,7 @@ function CompletedList(props) {
             <h5>Completed</h5>
             <ul>
                 {completed.map(complete => {
-                    return <li>{complete.name}
+                    return <li key={complete.id}>{complete.name}
                         <button onClick={() => props.undoCompletedTodo(complete.id)}>Undo</button>
                         <button onClick={() => props.deleteTodo(complete.id)}>Delete</button>
                     </li>
