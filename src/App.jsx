@@ -1,8 +1,8 @@
 import './App.css';
 import { useState, React, useEffect } from 'react';
 import axios from 'axios';
-import List from './components/CompletedList';
-import Edit from './components/Edit';
+import CompletedList from './components/CompletedList';
+import EditTodo from './components/Edit';
 
 const apiURL = import.meta.env.VITE_API_URL;
 console.log(`API URL: ${apiURL}`);
@@ -105,7 +105,7 @@ function TodoList() {
     }
   })
 
-  const undoTodo = (id) => {
+  const undoCompletedTodo = (id) => {
     const newTodos = [...todos].map(todo => {
       if (todo.id === id) { // If the id exists in the array
         return { ...todo, completed: false }; // Place the todo in the incompleted array
@@ -128,21 +128,23 @@ function TodoList() {
         <button type="submit">Add Todo</button>
       </form>
       <h5>Incompleted</h5>
-      {incompleteTodo.map(todo => {
-        <div key={todo.id}>
-          {editId === todo.id ? (
-            <Edit todo={todo} onSave={updateTodo} onCancel={() => setEditId(null)} />
-          ) : (
-            <>
-              {todo.name}
-              <button onClick={() => setEditId(todo.id)}>Edit</button>
-              <button onClick={() => deleteTodo(todo.id)}>Delete</button>
-              <button onClick={() => completeTodo(todo.id)}>Complete</button>
-            </>
-          )}
-        </div>
-      })}
-      <List todos={todos} deleteTodo={deleteTodo} undoTodo={undoTodo} />
+      <ul>
+        {incompleteTodo.map((todo) => (
+          <li key={todo.id}>
+            {editId === todo.id ? (
+              <EditTodo todo={todo} onSave={updateTodo} onCancel={() => setEditId(null)} />
+            ) : (
+              <>
+                {todo.name}
+                <button onClick={() => setEditId(todo.id)}>Edit</button>
+                <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+                <button onClick={() => completeTodo(todo.id)}>Complete</button>
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+      <CompletedList todos={todos} deleteTodo={deleteTodo} undoCompletedTodo={undoCompletedTodo} />
     </div>
   )
 }

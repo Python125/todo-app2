@@ -1,6 +1,6 @@
 import React from 'react';
 
-function List(props) {
+function CompletedList(props) {
     const completedList = props.todos.filter(todo => todo.completed);
 
     return (
@@ -9,7 +9,7 @@ function List(props) {
             <ul>
                 {completedList.map(complete => {
                     return <li>{complete.name}
-                        <button onClick={() => props.undoTodo(complete.id)}>Undo</button>
+                        <button onClick={() => props.undoCompletedTodo(complete.id)}>Undo</button>
                         <button onClick={() => props.deleteTodo(complete.id)}>Delete</button>
                     </li>
                 })}
@@ -18,4 +18,4 @@ function List(props) {
     )
 }
 
-export default List;
+export default CompletedList;
