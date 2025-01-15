@@ -1,13 +1,15 @@
 import './App.css';
 import { useState, React, useEffect } from 'react';
 import axios from 'axios';
+import List from './components/CompletedList';
+import Edit from './components/Edit';
 
 function App() {
   const [todos, setTodos] = useState([]);
   const [todoInput, setTodoInput] = useState('');
-  const [editTodo, setEditTodo] = useState(null);
+  const [editId, setEditId] = useState(null);
 
-  // useEffect(() => {
+  // useEffect(() => { // This is the code that gets the todos from the database
   //   axios.get(`${apiURL}/todos2`)
   //   .then(response => {
   //     setTodos(response.data);
@@ -15,7 +17,7 @@ function App() {
   // }, []);
 
   function addTodo(e) {
-    todoInput(e.target.value);
+    setTodoInput(e.target.value);
   }
 
   function submitTodo(e) {
@@ -72,7 +74,7 @@ function App() {
     axios.put(`${apiURL}/todos2/${id}`, { name: name })
       .then(() => {
         setTodos(newTodos); // Updates the todos list with the new values
-        setEditTodo(null);
+        setEditId(null);
       });
   }
 
@@ -117,6 +119,19 @@ function App() {
   return (
     <div>
       <h1>Todo List</h1>
+      <form onSubmit={submitTodo}>
+        <input type="text" value={todoInput} onChange={addTodo} />
+        <button type="submit">Add Todo</button>
+      </form>
+      {incompleteTodo.map(todo => {
+        <div key={todo.id}>
+          <h2>{todo.name}</h2>
+          <button onClick={() => updateTodo(todo.id)}>Update</button>
+          <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+          <button onClick={() => completeTodo(todo.id)}>Complete</button>
+        </div>
+      })}
+      <List todos={todos} deleteTodo={deleteTodo} undoTodo={undoTodo} />
     </div>
   )
 }
