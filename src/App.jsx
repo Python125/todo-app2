@@ -34,7 +34,7 @@ function TodoList() {
     if (!todoInput.trim()) return;
 
     if (Array.isArray(todos)) {
-      const todoExists = todos.some(todo => todo.name.toLowerCase() === inputValue.trim().toLowerCase());
+      const todoExists = todos.some(todo => todo.name.toLowerCase() === todoInput.trim().toLowerCase());
       if (todoExists) {
         alert('This already exists in your list');
         return;
@@ -94,4 +94,4 @@ function TodoList() {
   )
 }
 
-export default TodoList
+export default TodoList;
