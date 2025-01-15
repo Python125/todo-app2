@@ -128,6 +128,28 @@ function TodoList() {
   return (
     <div>
       <h1>Todo List</h1>
+      <form onSubmit={submitTodo}>
+        <input type="text" value={todoInput} onChange={addTodo} />
+        <button><MdAdd /></button>
+      </form>
+      <h5>Incompleted</h5>
+      <ul>
+        {incompleteTodo.map(todo => (
+          <li key={todo.id}>
+            {editTodo === todo.id ? (
+              <EditTodo todo={todo} onEdit={updateTodo} onCancel={() => setEditTodo(null)} />
+            ) : (
+              <>
+              {todo.name}
+              <button onClick={() => setEditTodo(todo.id)}><MdEdit /></button>
+              <button onClick={() => deleteTodo(todo.id)}><FaTrash /></button>
+              <button onClick={() => completeTodo(todo.id)}><FcCheckmark /></button>
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+      <List todos={todos} onDelete={deleteTodo} onIncomplete={undoCompleteTodo} />
     </div>
   )
 }
