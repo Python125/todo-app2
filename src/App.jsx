@@ -14,77 +14,84 @@ function App() {
   //   })
   // }, []);
 
-  function handleSubmit(e) {
+  function addTodo(e) {
+    todoInput(e.target.value);
+  }
+
+  function submitTodo(e) {
     e.preventDefault();
     if (!todoInput.trim()) return;
 
-    if (Array.isArray(todos) ? todos.some(todo => todo.name.toLowerCase() === todoInput.trim().toLowerCase()): null) {
-      alert('This already exists in your list');
-      return;
-    };
+    if (Array.isArray(todos)) {
+      const todoExists = todos.some(todo => todo.name.toLowerCase() === todoInput.trim().toLowerCase());
+      if (todoExists) {
+        alert('This already exists in your list');
+        return;
+      }
+    }
 
     const newTodo = {
       id: todos.length + 1,
       name: todoInput.trim(),
       completed: false,
     }
-
-    axios.post(`${baseUrl}/todos`, newTodo)
-      .then((response) => {
-        setTodos([...todos, response.data]);
-        todoInput('');
-      });
+    
+    axios.post(`${apiURL}/todos2`, newTodo)
+    .then(response => {
+      setTodos([...todos, response.data]);
+      setTodoInput('');
+    })
   }
 
   if (!todos) return "No post!";
 
-  const handleDelete = (id) => {
-    const newTodos = [...todos].filter(todo => {
-      if (todo.id === id) {
-        return false;
+  const deleteTodo = (id) => {
+    const newTodos = [...todos].filter(todo => { // Creates a new array, goes through each item in the array
+      if (todo.id === id) { // Checks to see if the id exists in the array
+        return false; // If the id exists, the item is removed
       } else {
-        return true;
+        return true; // If the id does not exist, the item is not removed
       }
     });
 
-    axios.delete(`${baseUrl}/todos/${id}`)
+    axios.delete(`${apiURL}/todos2/${id}`)
       .then(() => {
         setTodos(newTodos);
       });
   }
 
-  const handleUpdate = (id, name) => {
-    const newTodos = [...todos].map(todo => {
-      if (todo.id === id) {
-        return { ...todo, name: name };
+  const updateTodo = (id, name) => {
+    const newTodos = [...todos].map(todo => { // Creates a new array, goes through each item in the array
+      if (todo.id === id) { // Checks to see if the id exists in the array
+        return { ...todo, name: name }; // If the id exists, the item is updated to the new name
       } else {
-        return todo;
+        return todo; // If the id does not exist, the item is not updated
       }
     })
 
-    axios.put(`${baseUrl}/${id}`, { name: name })
+    axios.put(`${apiURL}/todos2/${id}`, { name: name })
       .then(() => {
-        setTodos(newTodos);
+        setTodos(newTodos); // Updates the todos list with the new values
         setEditTodo(null);
       });
   }
 
-  const handleComplete = (id) => {
-    const newTodos = [...todos].map(todo => {
-      if (todo.id === id) {
-        return { ...todo, completed: true };
+  const completeTodo = (id) => {
+    const newTodos = [...todos].map(todo => { // Creates a new array, goes through each item in the array
+      if (todo.id === id) { // Checks to see if the id exists in the array
+        return { ...todo, completed: true }; // If the id exists, the todo's value is updated to true
       } else {
-        return todo;
+        return todo; // If the id does not exist, the todo's value is returned
       }
     })
 
-    axios.put(`${baseUrl}/${id}`, { completed: true })
+    axios.put(`${apiURL}/todos2/${id}`, { completed: true })
       .then(() => {
-        setTodos(newTodos);
+        setTodos(newTodos); // Updates the todos list with the new values
       });
   };
 
-  const incomplete = todos.filter(todo => {
+  const incompleteTodo = todos.filter(todo => {
     if (todo.completed === false) {
       return true;
     } else {
@@ -92,16 +99,16 @@ function App() {
     }
   })
 
-  const handleUndo = (id) => {
+  const undoTodo = (id) => {
     const newTodos = [...todos].map(todo => {
-      if (todo.id === id) {
-        return { ...todo, completed: false };
+      if (todo.id === id) { // If the id exists in the array
+        return { ...todo, completed: false }; // Place the todo in the incompleted array
       } else {
-        return todo;
+        return todo; // Keep the todo in the completed array
       }
     })
     
-    axios.put(`${baseUrl}/${id}`, { completed: false })
+    axios.put(`${apiURL}/todos2/${id}`, { completed: false })
       .then(() => {
         setTodos(newTodos);
       });
