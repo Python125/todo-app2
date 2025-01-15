@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function EditTodo({ todo, OnSave, onCancel }) {
+function EditTodo({ todo, onSave, onCancel }) {
     const [editValue, setEditValue] = useState(todo.name);
 
     const editTodo = (e) => {
@@ -10,7 +10,7 @@ function EditTodo({ todo, OnSave, onCancel }) {
     const submitEditedTodo = (e) => {
         e.preventDefault();
         if (!editValue.trim()) return; // This makes sure that their are characters in the input field
-        OnSave(todo.id, editValue);
+        onSave(todo.id, editValue);
     }
 
     return (

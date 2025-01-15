@@ -75,7 +75,7 @@ function TodoList() {
       }
     })
 
-    axios.put(`${apiURL}/todos/${id}`, { name: name })
+    axios.put(`${apiURL}/${id}`, { name: name })
       .then(() => {
         setTodos(newTodos); // Updates the todos list with the new values
         setEditId(null);
@@ -91,7 +91,7 @@ function TodoList() {
       }
     })
 
-    axios.put(`${apiURL}/todos/${id}`, { completed: true })
+    axios.put(`${apiURL}/${id}`, { completed: true })
       .then(() => {
         setTodos(newTodos); // Updates the todos list with the new values
       });
@@ -114,7 +114,7 @@ function TodoList() {
       }
     })
     
-    axios.put(`${apiURL}/todos/${id}`, { completed: false })
+    axios.put(`${apiURL}/${id}`, { completed: false })
       .then(() => {
         setTodos(newTodos);
       });
