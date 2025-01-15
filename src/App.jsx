@@ -4,17 +4,21 @@ import axios from 'axios';
 import List from './components/CompletedList';
 import Edit from './components/Edit';
 
-function App() {
+const apiURL = import.meta.env.VITE_API_URL;
+console.log(`API URL: ${apiURL}`);
+
+
+function TodoList() {
   const [todos, setTodos] = useState([]);
   const [todoInput, setTodoInput] = useState('');
   const [editId, setEditId] = useState(null);
 
-  // useEffect(() => { // This is the code that gets the todos from the database
-  //   axios.get(`${apiURL}/todos2`)
-  //   .then(response => {
-  //     setTodos(response.data);
-  //   })
-  // }, []);
+  useEffect(() => { // This is the code that gets the todos from the database
+    axios.get(`${apiURL}/todos`)
+    .then(response => {
+      setTodos(response.data);
+    })
+  }, []);
 
   function addTodo(e) {
     setTodoInput(e.target.value);
@@ -38,7 +42,7 @@ function App() {
       completed: false,
     }
     
-    axios.post(`${apiURL}/todos2`, newTodo)
+    axios.post(`${apiURL}/todos`, newTodo)
     .then(response => {
       setTodos([...todos, response.data]);
       setTodoInput('');
@@ -56,7 +60,7 @@ function App() {
       }
     });
 
-    axios.delete(`${apiURL}/todos2/${id}`)
+    axios.delete(`${apiURL}/todos/${id}`)
       .then(() => {
         setTodos(newTodos);
       });
@@ -71,7 +75,7 @@ function App() {
       }
     })
 
-    axios.put(`${apiURL}/todos2/${id}`, { name: name })
+    axios.put(`${apiURL}/todos/${id}`, { name: name })
       .then(() => {
         setTodos(newTodos); // Updates the todos list with the new values
         setEditId(null);
@@ -87,7 +91,7 @@ function App() {
       }
     })
 
-    axios.put(`${apiURL}/todos2/${id}`, { completed: true })
+    axios.put(`${apiURL}/todos/${id}`, { completed: true })
       .then(() => {
         setTodos(newTodos); // Updates the todos list with the new values
       });
@@ -110,7 +114,7 @@ function App() {
       }
     })
     
-    axios.put(`${apiURL}/todos2/${id}`, { completed: false })
+    axios.put(`${apiURL}/todos/${id}`, { completed: false })
       .then(() => {
         setTodos(newTodos);
       });
@@ -123,12 +127,19 @@ function App() {
         <input type="text" value={todoInput} onChange={addTodo} />
         <button type="submit">Add Todo</button>
       </form>
+      <h5>Incompleted</h5>
       {incompleteTodo.map(todo => {
         <div key={todo.id}>
-          <h2>{todo.name}</h2>
-          <button onClick={() => updateTodo(todo.id)}>Update</button>
-          <button onClick={() => deleteTodo(todo.id)}>Delete</button>
-          <button onClick={() => completeTodo(todo.id)}>Complete</button>
+          {editId === todo.id ? (
+            <Edit todo={todo} onSave={updateTodo} onCancel={() => setEditId(null)} />
+          ) : (
+            <>
+              {todo.name}
+              <button onClick={() => setEditId(todo.id)}>Edit</button>
+              <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+              <button onClick={() => completeTodo(todo.id)}>Complete</button>
+            </>
+          )}
         </div>
       })}
       <List todos={todos} deleteTodo={deleteTodo} undoTodo={undoTodo} />
@@ -136,4 +147,4 @@ function App() {
   )
 }
 
-export default App;
+export default TodoList;
