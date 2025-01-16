@@ -14,12 +14,18 @@ function TodoList() {
   const [dueDate, setDueDate] = useState('');
   const [editId, setEditId] = useState(null);
 
-  useEffect(() => { // This is the code that gets the todos from the database
+  useEffect(() => {
     axios.get(`${apiURL}/todos`)
-    .then(response => {
-      setTodos(response.data);
-      //overDueTodo();
-    })
+      .then(response => {
+        const updatedTodos = response.data.map(todo => {
+          if (!todo.completed && new Date(todo.dueDate) < new Date()) {
+            return { ...todo, overDue: true };
+          } else {
+            return { ...todo, overDue: false };
+          }
+        });
+        setTodos(updatedTodos);
+      });
   }, []);
 
   function addTodo(e) {
@@ -129,23 +135,6 @@ function TodoList() {
       });
   }
 
-  const overDueTodo = () => {
-    const newTodos = [...todos].map(todo => {
-      if (!todo.completed && new Date(todo.dueDate) < new Date()) {
-        return { ...todo, overDue: true };
-      } else {
-        return { ...todo, overDue: false };
-      }
-    });
-
-    newTodos.forEach(todo => {
-      axios.put(`${apiURL}/${todo.id}`, { overDue: todo.overDue })
-        .then(() => {
-          setTodos(newTodos);
-        });
-    })
-  }
-
   return (
     <div>
       <h1>Todo List</h1>
@@ -153,7 +142,7 @@ function TodoList() {
         <input type="text" value={todoInput} onChange={addTodo} />
         <input type="datetime-local" value={dueDate} onChange={addDueDate} />
         <button type="submit">Add Todo</button>
-        <button onClick={overDueTodo}>Check Overdue Todos</button>
+        {/* <button onClick={overDueTodo}>Check Overdue Todos</button> */}
       </form>
       <h5>Incomplete</h5>
       <ul>
