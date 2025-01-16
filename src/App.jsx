@@ -18,7 +18,7 @@ function TodoList() {
     axios.get(`${apiURL}/todos`)
     .then(response => {
       setTodos(response.data);
-      overDueTodo();
+      //overDueTodo();
     })
   }, []);
 
@@ -149,6 +149,7 @@ function TodoList() {
   return (
     <div>
       <h1>Todo List</h1>
+      <button onClick={overDueTodo}>Check Overdue Todos</button>
       <form onSubmit={submitTodo}>
         <input type="text" value={todoInput} onChange={addTodo} />
         <input type="datetime-local" value={dueDate} onChange={addDueDate} />
