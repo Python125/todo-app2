@@ -46,6 +46,7 @@ function TodoList() {
       name: todoInput.trim(),
       completed: false,
       dueDate: dueDate.trim(),
+      overdue: false,
     }
     
     axios.post(`${apiURL}/todos`, newTodo)
@@ -122,6 +123,21 @@ function TodoList() {
     })
     
     axios.put(`${apiURL}/${id}`, { completed: false })
+      .then(() => {
+        setTodos(newTodos);
+      });
+  }
+
+  const overdueTodo = (id) => {
+    const newTodos = [...todos].filter(todo => {
+      if (todo.dueDate < new Date()) {
+        return true;
+      } else {
+        return false;
+      }
+    })
+
+    axios.put(`${apiURL}/${id}`, { overdue: true })
       .then(() => {
         setTodos(newTodos);
       });
