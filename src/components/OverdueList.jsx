@@ -10,7 +10,7 @@ function OverdueList({ todos }) {
 
     return (
         <div>
-            <h5>Overdue Items</h5>
+            <h5>Overdue</h5>
             <ul>
                 {overdueTodos.map(overdue => (
                     <li key={overdue.id}>

@@ -135,7 +135,7 @@ function TodoList() {
         <input type="datetime-local" value={dueDate} onChange={addDueDate} />
         <button type="submit">Add Todo</button>
       </form>
-      <h5>Incompleted</h5>
+      <h5>Incomplete</h5>
       <ul>
         {incompleteTodo.map((todo) => (
           <li key={todo.id}>

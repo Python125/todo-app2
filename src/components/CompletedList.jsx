@@ -5,7 +5,7 @@ function CompletedList(props) {
 
     return (
         <div>
-            <h5>Completed</h5>
+            <h5>Complete</h5>
             <ul>
                 {completed.map(complete => {
                     return <li key={complete.id}>{complete.name}
