@@ -149,11 +149,11 @@ function TodoList() {
   return (
     <div>
       <h1>Todo List</h1>
-      <button onClick={overDueTodo}>Check Overdue Todos</button>
       <form onSubmit={submitTodo}>
         <input type="text" value={todoInput} onChange={addTodo} />
         <input type="datetime-local" value={dueDate} onChange={addDueDate} />
         <button type="submit">Add Todo</button>
+        <button onClick={overDueTodo}>Mark Overdue</button>
       </form>
       <h5>Incomplete</h5>
       <ul>
