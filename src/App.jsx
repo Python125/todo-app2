@@ -132,7 +132,7 @@ function TodoList() {
       <h1>Todo List</h1>
       <form onSubmit={submitTodo}>
         <input type="text" value={todoInput} onChange={addTodo} />
-        <input type="date" value={dueDate} onChange={addDueDate} />
+        <input type="datetime-local" value={dueDate} onChange={addDueDate} />
         <button type="submit">Add Todo</button>
       </form>
       <h5>Incompleted</h5>
