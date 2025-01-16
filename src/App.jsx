@@ -18,6 +18,7 @@ function TodoList() {
     axios.get(`${apiURL}/todos`)
     .then(response => {
       setTodos(response.data);
+      overDueTodo();
     })
   }, []);
 
@@ -46,7 +47,7 @@ function TodoList() {
       name: todoInput.trim(),
       completed: false,
       dueDate: dueDate.trim(),
-      overdue: false,
+      overDue: false,
     }
     
     axios.post(`${apiURL}/todos`, newTodo)
@@ -128,19 +129,21 @@ function TodoList() {
       });
   }
 
-  const overdueTodo = (id) => {
-    const newTodos = [...todos].filter(todo => {
-      if (todo.dueDate < new Date()) {
-        return true;
+  const overDueTodo = () => {
+    const newTodos = [...todos].map(todo => {
+      if (!todo.completed && new Date(todo.dueDate) < new Date()) {
+        return { ...todo, overDue: true };
       } else {
-        return false;
+        return { ...todo, overDue: false };
       }
-    })
+    });
 
-    axios.put(`${apiURL}/${id}`, { overdue: true })
-      .then(() => {
-        setTodos(newTodos);
-      });
+    newTodos.forEach(todo => {
+      axios.put(`${apiURL}/${todo.id}`, { overDue: todo.overDue })
+        .then(() => {
+          setTodos(newTodos);
+        });
+    })
   }
 
   return (
@@ -169,7 +172,7 @@ function TodoList() {
         ))}
       </ul>
       <CompletedList todos={todos} deleteTodo={deleteTodo} undoCompletedTodo={undoCompletedTodo} />
-      <OverdueList todos={todos} />
+      <OverdueList todos={todos.filter(todo => todo.overDue && !todo.completed)} />
     </div>
   )
 }

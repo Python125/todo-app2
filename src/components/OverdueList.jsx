@@ -1,8 +1,8 @@
 import React from 'react';
 import { format } from 'date-fns';
 
-function OverdueList(props) {
-    const overdue = props.todos.filter(todo => todo.overdue);
+function OverdueList({ todos }) {
+    const overdue = todos.filter(todo => todo.overDue);
 
     return (
         <div>
