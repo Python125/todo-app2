@@ -81,16 +81,16 @@ function TodoList() {
       });
   }
 
-  const updateTodo = (id, name) => {
+  const updateTodo = (id, name, dueDate) => {
     const newTodos = [...todos].map(todo => { // Creates a new array, goes through each item in the array
       if (todo.id === id) { // Checks to see if the id exists in the array
-        return { ...todo, name: name }; // If the id exists, the item is updated to the new name
+        return { ...todo, name: name, dueDate: dueDate }; // If the id exists, the item is updated to the new name and due date
       } else {
         return todo; // If the id does not exist, the item is not updated
       }
     })
 
-    axios.put(`${apiURL}/${id}`, { name: name })
+    axios.put(`${apiURL}/${id}`, { name: name, dueDate: dueDate })
       .then(() => {
         setTodos(newTodos); // Updates the todos list with the new values
         setEditId(null);
