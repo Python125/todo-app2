@@ -104,13 +104,13 @@ function TodoList() {
   const completeTodo = (id) => {
     const newTodos = [...todos].map(todo => { // Creates a new array, goes through each item in the array
       if (todo.id === id) { // Checks to see if the id exists in the array
-        return { ...todo, completed: true }; // If the id exists, the todo's value is updated to true
+        return { ...todo, completed: true, overDue: false }; // If the id exists, the todo's value is updated to true
       } else {
         return todo; // If the id does not exist, the todo's value is returned
       }
     })
 
-    axios.put(`${apiURL}/${id}`, { completed: true })
+    axios.put(`${apiURL}/${id}`, { completed: true, overDue: false })
       .then(() => {
         setTodos(newTodos); // Updates the todos list with the new values
       });
