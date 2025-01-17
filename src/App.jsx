@@ -6,7 +6,7 @@ import EditTodo from './components/Edit';
 import OverdueList from './components/OverdueList';
 
 const apiURL = import.meta.env.VITE_API_URL;
-//console.log(`API URL: ${apiURL}`);
+console.log(`API URL: ${apiURL}`);
 
 function TodoList() {
   const [todos, setTodos] = useState([]);
@@ -18,15 +18,11 @@ function TodoList() {
     axios.get(`${apiURL}/todos`)
       .then(response => {
         const updatedTodos = response.data.map(todo => {
-          const isOverDue = !todo.completed && new Date(todo.dueDate) < new Date();
-          if (todo.overDue !== isOverDue) {
-            axios.put(`${apiURL}/${todo.id}`, { overDue: isOverDue })
-              .then(() => {
-                console.log(`Todo ${todo.id} updated successfully.`);
-              })
-              .catch(error => console.error(`Failed to update todo ${todo.id}:`, error));
+          if (!todo.completed && new Date(todo.dueDate) < new Date()) {
+            return { ...todo, overDue: true };
+          } else {
+            return { ...todo, overDue: false };
           }
-          return { ...todo, overDue: isOverDue };
         });
         setTodos(updatedTodos);
       });
@@ -104,13 +100,13 @@ function TodoList() {
   const completeTodo = (id) => {
     const newTodos = [...todos].map(todo => { // Creates a new array, goes through each item in the array
       if (todo.id === id) { // Checks to see if the id exists in the array
-        return { ...todo, completed: true, overDue: false }; // If the id exists, the todo's value is updated to true
+        return { ...todo, completed: true }; // If the id exists, the todo's value is updated to true
       } else {
         return todo; // If the id does not exist, the todo's value is returned
       }
     })
 
-    axios.put(`${apiURL}/${id}`, { completed: true, overDue: false })
+    axios.put(`${apiURL}/${id}`, { completed: true })
       .then(() => {
         setTodos(newTodos); // Updates the todos list with the new values
       });
