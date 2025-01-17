@@ -6,7 +6,7 @@ import EditTodo from './components/Edit';
 import OverdueList from './components/OverdueList';
 
 const apiURL = import.meta.env.VITE_API_URL;
-console.log(`API URL: ${apiURL}`);
+//console.log(`API URL: ${apiURL}`);
 
 function TodoList() {
   const [todos, setTodos] = useState([]);
@@ -18,11 +18,15 @@ function TodoList() {
     axios.get(`${apiURL}/todos`)
       .then(response => {
         const updatedTodos = response.data.map(todo => {
-          if (!todo.completed && new Date(todo.dueDate) < new Date()) {
-            return { ...todo, overDue: true };
-          } else {
-            return { ...todo, overDue: false };
+          const isOverDue = !todo.completed && new Date(todo.dueDate) < new Date();
+          if (todo.overDue !== isOverDue) {
+            axios.put(`${apiURL}/${todo.id}`, { overDue: isOverDue })
+              .then(() => {
+                console.log(`Todo ${todo.id} updated successfully.`);
+              })
+              .catch(error => console.error(`Failed to update todo ${todo.id}:`, error));
           }
+          return { ...todo, overDue: isOverDue };
         });
         setTodos(updatedTodos);
       });
