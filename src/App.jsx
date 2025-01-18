@@ -152,7 +152,7 @@ function TodoList() {
               <EditTodo todo={todo} onSave={updateTodo} onCancel={() => setEditId(null)} />
             ) : (
               <>
-                {todo.name} - Due: {format(new Date(todo.dueDate), 'yyyy-MM-dd hh:mm a')}
+                {todo.name} - Due: {format(new Date(todo.dueDate), 'yyyy-M-d hh:mm a')}
                 <button onClick={() => setEditId(todo.id)}>Edit</button>
                 <button onClick={() => deleteTodo(todo.id)}>Delete</button>
                 <button onClick={() => completeTodo(todo.id)}>Complete</button>

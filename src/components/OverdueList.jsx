@@ -10,7 +10,7 @@ function OverdueList({ todos }) {
             <ul>
                 {overdue.map(overdue => (
                     <li key={overdue.id}>
-                        {overdue.name} - Due: {format(new Date(overdue.dueDate), 'yyyy-MM-dd hh:mm a')}
+                        {overdue.name} - Due: {format(new Date(overdue.dueDate), 'yyyy-M-d hh:mm a')}
                     </li>
                 ))}
             </ul>
