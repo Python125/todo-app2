@@ -4,6 +4,7 @@ import axios from 'axios';
 import CompletedList from './components/CompletedList';
 import EditTodo from './components/Edit';
 import OverdueList from './components/OverdueList';
+import { format } from 'date-fns';
 
 const apiURL = import.meta.env.VITE_API_URL;
 console.log(`API URL: ${apiURL}`);
@@ -142,7 +143,6 @@ function TodoList() {
         <input type="text" value={todoInput} onChange={addTodo} />
         <input type="datetime-local" value={dueDate} onChange={addDueDate} />
         <button type="submit">Add Todo</button>
-        {/* <button onClick={overDueTodo}>Check Overdue Todos</button> */}
       </form>
       <h5>Incomplete</h5>
       <ul>
@@ -152,7 +152,7 @@ function TodoList() {
               <EditTodo todo={todo} onSave={updateTodo} onCancel={() => setEditId(null)} />
             ) : (
               <>
-                {todo.name} - Due: {todo.dueDate}
+                {todo.name} - Due: {format(new Date(todo.dueDate), 'yyyy-MM-dd HH:mm:ss')}
                 <button onClick={() => setEditId(todo.id)}>Edit</button>
                 <button onClick={() => deleteTodo(todo.id)}>Delete</button>
                 <button onClick={() => completeTodo(todo.id)}>Complete</button>
