@@ -60,11 +60,16 @@ function TodoList() {
       }
     }
 
+    const [hours, minutes] = dueDate.split(':').map(Number);
+    const dateTime = new Date(calenderDate);
+    dateTime.setHours(hours);
+    dateTime.setMinutes(minutes);
+
     const newTodo = {
       id: todos.length + 1,
       name: todoInput.trim(),
       completed: false,
-      dueDate: dueDate.trim(),
+      dueDate: dateTime.toISOString(),
       overDue: false,
     }
     
@@ -154,7 +159,7 @@ function TodoList() {
       <form onSubmit={submitTodo}>
         <input type="text" value={todoInput} onChange={addTodo} />
         <Calendar value={calenderDate} onChange={setCalenderDate} />
-        <input type="datetime-local" value={dueDate} onChange={addDueDate} />
+        <input type="time" value={dueDate} onChange={addDueDate} />
         <button type="submit">Add Todo</button>
       </form>
       <h5>Incomplete</h5>
