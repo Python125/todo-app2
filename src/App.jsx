@@ -44,9 +44,9 @@ function TodoList() {
     setTodoInput(e.target.value);
   }
 
-    function addDueDate(e) {
-      setDueDate(e.target.value);
-    }
+  function addDueDate(e) {
+    setDueDate(e.target.value);
+  }
 
   function submitTodo(e) {
     e.preventDefault();
@@ -154,7 +154,7 @@ function TodoList() {
       <form onSubmit={submitTodo}>
         <input type="text" value={todoInput} onChange={addTodo} />
         <Calendar onChange={setCalenderDate} value={calenderDate} />
-        <input type="datetime-local" value={dueDate} onChange={addDueDate} />
+        <input type="time" value={dueDate} onChange={addDueDate} />
         <button type="submit">Add Todo</button>
       </form>
       <h5>Incomplete</h5>
