@@ -4,7 +4,7 @@ import axios from 'axios';
 import CompletedList from './components/CompletedList';
 import EditTodo from './components/Edit';
 import OverdueList from './components/OverdueList';
-import { format } from 'date-fns';
+// import { format } from 'date-fns';
 import Calendar from 'react-calendar';
 
 const apiURL = import.meta.env.VITE_API_URL;
@@ -42,9 +42,9 @@ function TodoList() {
     setTodoInput(e.target.value);
   }
 
-  function addDueDate(e) {
-    setDueDate(e.target.value);
-  }
+    function addDueDate(e) {
+      setDueDate(e.target.value);
+    }
 
   function submitTodo(e) {
     e.preventDefault();
@@ -151,7 +151,7 @@ function TodoList() {
       <h1>Todo List</h1>
       <form onSubmit={submitTodo}>
         <input type="text" value={todoInput} onChange={addTodo} />
-        <Calendar onChange={setDueDate} value={dueDate} />
+        <Calendar value={dueDate} onChange={addDueDate} />
         {/* <input type="datetime-local" value={dueDate} onChange={addDueDate} /> */}
         <button type="submit">Add Todo</button>
       </form>
@@ -163,7 +163,7 @@ function TodoList() {
               <EditTodo todo={todo} onSave={updateTodo} onCancel={() => setEditId(null)} />
             ) : (
               <>
-                {todo.name} - Due: {format(new Date(todo.dueDate), 'hh:mm a')}
+                {todo.name} - Due: {format(new Date(todo.dueDate), 'yyyy-M-d hh:mm a')}
                 <button onClick={() => setEditId(todo.id)}>Edit</button>
                 <button onClick={() => deleteTodo(todo.id)}>Delete</button>
                 <button onClick={() => completeTodo(todo.id)}>Complete</button>
