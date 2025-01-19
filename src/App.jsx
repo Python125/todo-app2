@@ -5,6 +5,7 @@ import CompletedList from './components/CompletedList';
 import EditTodo from './components/Edit';
 import OverdueList from './components/OverdueList';
 import { format } from 'date-fns';
+import Calendar from 'react-calendar';
 
 const apiURL = import.meta.env.VITE_API_URL;
 console.log(`API URL: ${apiURL}`);
@@ -16,17 +17,25 @@ function TodoList() {
   const [editId, setEditId] = useState(null);
 
   useEffect(() => {
-    axios.get(`${apiURL}/todos`)
-      .then(response => {
-        const updatedTodos = response.data.map(todo => {
-          if (!todo.completed && new Date(todo.dueDate) < new Date()) {
-            return { ...todo, overDue: true };
-          } else {
-            return { ...todo, overDue: false };
-          }
-        });
-        setTodos(updatedTodos);
+    const fetchTodos = async () => {
+      const response = await axios.get(`${apiURL}/todos`);
+      const updatedTodos = response.data.map(todo => {
+        if (!todo.completed && new Date(todo.dueDate) < new Date()) {
+          return { ...todo, overDue: true };
+        } else {
+          return { ...todo, overDue: false };
+        }
       });
+      setTodos(updatedTodos);
+    };
+
+    fetchTodos();
+
+    const interval = setInterval(() => {
+      fetchTodos();
+    }, 1000);
+
+    return () => clearInterval(interval);
   }, []);
 
   function addTodo(e) {
@@ -70,6 +79,7 @@ function TodoList() {
   const deleteTodo = (id) => {
     const newTodos = [...todos].filter(todo => { // Creates a new array, goes through each item in the array
       if (todo.id === id) { // Checks to see if the id exists in the array
+        const isOverdue = new Date(todo.dueDate) < new Date();
         return false; // If the id exists, the item is removed
       } else {
         return true; // If the id does not exist, the item is not removed
@@ -141,7 +151,8 @@ function TodoList() {
       <h1>Todo List</h1>
       <form onSubmit={submitTodo}>
         <input type="text" value={todoInput} onChange={addTodo} />
-        <input type="datetime-local" value={dueDate} onChange={addDueDate} />
+        <Calendar onChange={setDueDate} value={dueDate} />
+        {/* <input type="datetime-local" value={dueDate} onChange={addDueDate} /> */}
         <button type="submit">Add Todo</button>
       </form>
       <h5>Incomplete</h5>
@@ -152,7 +163,7 @@ function TodoList() {
               <EditTodo todo={todo} onSave={updateTodo} onCancel={() => setEditId(null)} />
             ) : (
               <>
-                {todo.name} - Due: {format(new Date(todo.dueDate), 'yyyy-M-d hh:mm a')}
+                {todo.name} - Due: {format(new Date(todo.dueDate), 'hh:mm a')}
                 <button onClick={() => setEditId(todo.id)}>Edit</button>
                 <button onClick={() => deleteTodo(todo.id)}>Delete</button>
                 <button onClick={() => completeTodo(todo.id)}>Complete</button>
