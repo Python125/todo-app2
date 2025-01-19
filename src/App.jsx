@@ -4,8 +4,9 @@ import axios from 'axios';
 import CompletedList from './components/CompletedList';
 import EditTodo from './components/Edit';
 import OverdueList from './components/OverdueList';
-// import { format } from 'date-fns';
+import { format } from 'date-fns';
 import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 
 const apiURL = import.meta.env.VITE_API_URL;
 console.log(`API URL: ${apiURL}`);
@@ -15,6 +16,7 @@ function TodoList() {
   const [todoInput, setTodoInput] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [editId, setEditId] = useState(null);
+  const [calenderDate, setCalenderDate] = useState(new Date());
 
   useEffect(() => {
     const fetchTodos = async () => {
@@ -151,8 +153,8 @@ function TodoList() {
       <h1>Todo List</h1>
       <form onSubmit={submitTodo}>
         <input type="text" value={todoInput} onChange={addTodo} />
-        <Calendar value={dueDate} onChange={addDueDate} />
-        {/* <input type="datetime-local" value={dueDate} onChange={addDueDate} /> */}
+        <Calendar onChange={setCalenderDate} value={calenderDate} />
+        <input type="datetime-local" value={dueDate} onChange={addDueDate} />
         <button type="submit">Add Todo</button>
       </form>
       <h5>Incomplete</h5>
