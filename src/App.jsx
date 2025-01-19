@@ -14,8 +14,8 @@ console.log(`API URL: ${apiURL}`);
 function TodoList() {
   const [todos, setTodos] = useState([]);
   const [todoInput, setTodoInput] = useState('');
-  const [dueDate, setDueDate] = useState('');
   const [editId, setEditId] = useState(null);
+  const [dueDate, setDueDate] = useState('');
   const [calenderDate, setCalenderDate] = useState(new Date());
 
   useEffect(() => {
@@ -153,8 +153,8 @@ function TodoList() {
       <h1>Todo List</h1>
       <form onSubmit={submitTodo}>
         <input type="text" value={todoInput} onChange={addTodo} />
-        <Calendar onChange={setCalenderDate} value={calenderDate} />
-        <input type="datetime-local" value={dueDate} onChange={addDueDate} />
+        <Calendar value={calenderDate} onChange={setCalenderDate} />
+        <input type="time" value={dueDate} onChange={addDueDate} />
         <button type="submit">Add Todo</button>
       </form>
       <h5>Incomplete</h5>
