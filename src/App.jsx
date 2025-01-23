@@ -5,8 +5,11 @@ import CompletedList from './components/CompletedList';
 import EditTodo from './components/Edit';
 import OverdueList from './components/OverdueList';
 import { format } from 'date-fns';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
+// import Calendar from 'react-calendar';
+// import 'react-calendar/dist/Calendar.css';
+import { DateTimePicker } from '@mantine/dates';
+import { MantineProvider } from '@mantine/core';
+import '@mantine/dates/styles.css';
 
 const apiURL = import.meta.env.VITE_API_URL;
 console.log(`API URL: ${apiURL}`);
@@ -154,12 +157,15 @@ function TodoList() {
   }
 
   return (
-    <div>
+    <MantineProvider>
+      <div>
       <h1>Todo List</h1>
       <form onSubmit={submitTodo}>
         <input type="text" value={todoInput} onChange={addTodo} />
-        <Calendar value={calenderDate} onChange={setCalenderDate} />
-        <input type="time" value={dueDate} onChange={addDueDate} />
+
+        <DateTimePicker value={calenderDate} onDateChange={(newDate) => setCalenderDate(newDate)} placeholder='Pick date and time' />
+        {/* <input type="time" value={dueDate} onChange={addDueDate} /> */}
+
         <button type="submit">Add Todo</button>
       </form>
       <h5>Incomplete</h5>
@@ -182,6 +188,7 @@ function TodoList() {
       <CompletedList todos={todos} deleteTodo={deleteTodo} undoCompletedTodo={undoCompletedTodo} />
       <OverdueList todos={todos.filter(todo => todo.overDue && !todo.completed)} />
     </div>
+    </MantineProvider>
   )
 }
 
