@@ -10,6 +10,7 @@ import OverdueList from './components/OverdueList';
 import { DateTimePicker } from '@mantine/dates';
 import { MantineProvider } from '@mantine/core';
 import '@mantine/dates/styles.css';
+import { ca } from 'date-fns/locale';
 
 const apiURL = import.meta.env.VITE_API_URL;
 console.log(`API URL: ${apiURL}`);
@@ -47,7 +48,7 @@ function TodoList() {
   function addTodo(e) {
     setTodoInput(e.target.value);
   }
-
+  
   function addDueDate(e) {
     setDueDate(e.target.value);
   }
@@ -65,20 +66,26 @@ function TodoList() {
     }
 
     const [hours, minutes] = dueDate.split(':').map(Number);
+    console.log(hours);
+    console.log(minutes);
+
     const dateTime = new Date(calenderDate);
+
     dateTime.setHours(hours);
-    dateTime.setMinutes(minutes);
+
+    // dateTime.setMinutes(minutes);
+    console.log(dateTime);
 
     const newTodo = {
       id: todos.length + 1,
       name: todoInput.trim(),
       completed: false,
-      dueDate: dateTime.toISOString(),
+      dueDate: dateTime.toDateString(),
       overDue: false,
     }
+    console.log(newTodo);
     
-    axios.post(`${apiURL}/todos`, newTodo)
-    .then(response => {
+    axios.post(`${apiURL}/todos`, newTodo).then(response => {
       setTodos([...todos, response.data]);
       setTodoInput('');
       setDueDate('');
@@ -164,7 +171,7 @@ function TodoList() {
       <form onSubmit={submitTodo}>
         <input type="text" value={todoInput} onChange={addTodo} />
 
-        <DateTimePicker valueFormat='MM-DD-YYYY HH:mm' withSeconds={false} onDateChange={(newDate) => setCalenderDate(newDate)} placeholder='Pick date and time' />
+        <DateTimePicker valueFormat='MM-dd-yyyy HH:mm' onChange={(newDate) => setCalenderDate(newDate)} placeholder='Pick date and time' />
         {/* <input type="time" value={dueDate} onChange={addDueDate} /> */}
 
         <button type="submit">Add Todo</button>
