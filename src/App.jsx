@@ -20,7 +20,7 @@ function TodoList() {
   const [editId, setEditId] = useState(null);
 
   const [dueDate, setDueDate] = useState('');
-  const [calenderDate, setCalenderDate] = useState(new Date());
+  const [calendarDate, setCalendarDate] = useState(new Date());
 
   useEffect(() => {
     const fetchTodos = async () => {
@@ -68,7 +68,7 @@ function TodoList() {
     console.log(hours);
     console.log(minutes);
 
-    const dateTime = new Date(calenderDate);
+    const dateTime = new Date(calendarDate);
 
     dateTime.setHours(hours);
 
@@ -170,7 +170,7 @@ function TodoList() {
       <form onSubmit={submitTodo}>
         <input type="text" value={todoInput} onChange={addTodo} />
 
-        <DateTimePicker valueFormat='MM-dd-yyyy HH:mm' onChange={(newDate) => setCalenderDate(newDate)} placeholder='Pick date and time' />
+        <DateTimePicker valueFormat='MM-dd-yyyy HH:mm' onChange={(newDate) => setCalendarDate(newDate)} placeholder='Pick date and time' />
         {/* <input type="time" value={dueDate} onChange={addDueDate} /> */}
 
         <button type="submit">Add Todo</button>
