@@ -10,7 +10,6 @@ import OverdueList from './components/OverdueList';
 import { DateTimePicker } from '@mantine/dates';
 import { MantineProvider } from '@mantine/core';
 import '@mantine/dates/styles.css';
-import { ca } from 'date-fns/locale';
 
 const apiURL = import.meta.env.VITE_API_URL;
 console.log(`API URL: ${apiURL}`);
