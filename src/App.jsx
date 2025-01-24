@@ -4,7 +4,7 @@ import axios from 'axios';
 import CompletedList from './components/CompletedList';
 import EditTodo from './components/Edit';
 import OverdueList from './components/OverdueList';
-import { format } from 'date-fns';
+// import { format } from 'date-fns';
 // import Calendar from 'react-calendar';
 // import 'react-calendar/dist/Calendar.css';
 import { DateTimePicker } from '@mantine/dates';
@@ -18,6 +18,7 @@ function TodoList() {
   const [todos, setTodos] = useState([]);
   const [todoInput, setTodoInput] = useState('');
   const [editId, setEditId] = useState(null);
+
   const [dueDate, setDueDate] = useState('');
   const [calenderDate, setCalenderDate] = useState(new Date());
 
@@ -163,7 +164,7 @@ function TodoList() {
       <form onSubmit={submitTodo}>
         <input type="text" value={todoInput} onChange={addTodo} />
 
-        <DateTimePicker value={calenderDate} onDateChange={(newDate) => setCalenderDate(newDate)} placeholder='Pick date and time' />
+        <DateTimePicker value={calenderDate} withSeconds={false} onDateChange={(newDate) => setCalenderDate(newDate)} placeholder='Pick date and time' />
         {/* <input type="time" value={dueDate} onChange={addDueDate} /> */}
 
         <button type="submit">Add Todo</button>
@@ -176,7 +177,7 @@ function TodoList() {
               <EditTodo todo={todo} onSave={updateTodo} onCancel={() => setEditId(null)} />
             ) : (
               <>
-                {todo.name} - Due: {format(new Date(todo.dueDate), 'yyyy-M-d hh:mm a')}
+                {todo.name} - Due: {new Date(todo.dueDate).toLocaleString()}
                 <button onClick={() => setEditId(todo.id)}>Edit</button>
                 <button onClick={() => deleteTodo(todo.id)}>Delete</button>
                 <button onClick={() => completeTodo(todo.id)}>Complete</button>
