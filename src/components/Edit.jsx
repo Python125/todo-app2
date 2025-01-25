@@ -22,7 +22,7 @@ function EditTodo({ todo, onSave, onCancel }) {
     return (
         <form onSubmit={submitEditedTodo}>
             <input type="text" value={editValue} onChange={editTodo} />
-            <input type="datetime-local" value={editDueDate} onChange={editDueDateHandler} />
+            <input value={editDueDate} onChange={editDueDateHandler} />
             <button type="submit">Save</button>
             <button onClick={onCancel}>Cancel</button>
         </form>
