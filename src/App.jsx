@@ -64,22 +64,19 @@ function TodoList() {
       }
     }
 
-    const [hours, minutes] = dueDate.split(':').map(Number);
-    console.log(hours);
-    console.log(minutes);
+    //const [hours, minutes] = dueDate.split(':').map(Number);
 
     const dateTime = new Date(calendarDate);
 
-    dateTime.setHours(hours);
-
-    // dateTime.setMinutes(minutes);
+    //dateTime.setHours(hours);
+    //dateTime.setMinutes(minutes);
     console.log(dateTime);
 
     const newTodo = {
       id: todos.length + 1,
       name: todoInput.trim(),
       completed: false,
-      dueDate: dateTime.toDateString(),
+      dueDate: dateTime.toISOString(),
       overDue: false,
     }
     console.log(newTodo);
