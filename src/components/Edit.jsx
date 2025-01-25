@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// import { format } from 'date-fns';
 
 function EditTodo({ todo, onSave, onCancel }) {
     const [editValue, setEditValue] = useState(todo.name);
