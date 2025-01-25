@@ -158,10 +158,7 @@ function TodoList() {
       <h1>Todo List</h1>
       <form onSubmit={submitTodo}>
         <input type="text" value={todoInput} onChange={addTodo} />
-
-        <DateTimePicker valueFormat='MM-dd-yyyy HH:mm' onChange={(newDate) => setCalendarDate(newDate)} placeholder='Pick date and time' />
-        {/* <input type="time" value={dueDate} onChange={addDueDate} /> */}
-
+        <DateTimePicker onChange={(newDate) => setCalendarDate(newDate)} placeholder='Pick date and time' />
         <button type="submit">Add Todo</button>
       </form>
       <h5>Incomplete</h5>
