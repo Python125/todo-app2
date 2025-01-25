@@ -4,9 +4,6 @@ import axios from 'axios';
 import CompletedList from './components/CompletedList';
 import EditTodo from './components/Edit';
 import OverdueList from './components/OverdueList';
-// import { format } from 'date-fns';
-// import Calendar from 'react-calendar';
-// import 'react-calendar/dist/Calendar.css';
 import { DateTimePicker } from '@mantine/dates';
 import { MantineProvider } from '@mantine/core';
 import '@mantine/dates/styles.css';
@@ -64,12 +61,7 @@ function TodoList() {
       }
     }
 
-    //const [hours, minutes] = dueDate.split(':').map(Number);
-
     const dateTime = new Date(calendarDate);
-
-    //dateTime.setHours(hours);
-    //dateTime.setMinutes(minutes);
     console.log(dateTime);
 
     const newTodo = {
