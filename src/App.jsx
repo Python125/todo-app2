@@ -7,7 +7,7 @@ import OverdueList from './components/OverdueList';
 import { DateTimePicker } from '@mantine/dates';
 import { MantineProvider } from '@mantine/core';
 import '@mantine/dates/styles.css';
-
+import { format } from 'date-fns';
 const apiURL = import.meta.env.VITE_API_URL;
 console.log(`API URL: ${apiURL}`);
 
@@ -169,7 +169,7 @@ function TodoList() {
               <EditTodo todo={todo} onSave={updateTodo} onCancel={() => setEditId(null)} />
             ) : (
               <>
-                {todo.name} - Due: {new Date(todo.dueDate).toLocaleString()}
+                {todo.name} - Due: {format(new Date(todo.dueDate), 'MM-dd-yyyy h:mm a')}
                 <button onClick={() => setEditId(todo.id)}>Edit</button>
                 <button onClick={() => deleteTodo(todo.id)}>Delete</button>
                 <button onClick={() => completeTodo(todo.id)}>Complete</button>

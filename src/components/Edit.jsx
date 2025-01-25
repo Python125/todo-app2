@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { format } from 'date-fns';
 
 function EditTodo({ todo, onSave, onCancel }) {
     const [editValue, setEditValue] = useState(todo.name);
@@ -10,6 +11,7 @@ function EditTodo({ todo, onSave, onCancel }) {
 
     const editDueDateHandler = (e) => {
         setEditDueDate(e.target.value);
+        console.log(editDueDate);
     }
 
     const submitEditedTodo = (e) => {
@@ -23,7 +25,7 @@ function EditTodo({ todo, onSave, onCancel }) {
     return (
         <form onSubmit={submitEditedTodo}>
             <input type="text" value={editValue} onChange={editTodo} />
-            <input value={editDueDate} onChange={editDueDateHandler} />
+            <input value={format(new Date(editDueDate), 'MM-dd-yyyy h:mm a')} onChange={editDueDateHandler} />
             <button type="submit">Save</button>
             <button onClick={onCancel}>Cancel</button>
         </form>
