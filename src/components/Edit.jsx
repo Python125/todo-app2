@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 
 function EditTodo({ todo, onSave, onCancel }) {
     const [editValue, setEditValue] = useState(todo.name);
-    const [editDueDate, setEditDueDate] = useState(todo.dueDate);
+    const [editDueDate, setEditDueDate] = useState(format(new Date(todo.dueDate), 'MM-dd-yyyy h:mm a'));
 
     const editTodo = (e) => {
         setEditValue(e.target.value);
@@ -25,7 +25,6 @@ function EditTodo({ todo, onSave, onCancel }) {
         <form onSubmit={submitEditedTodo}>
             <input type="text" value={editValue} onChange={editTodo} />
             <input value={editDueDate} onChange={editDueDateHandler} />
-            {/* <input value={format(new Date(editDueDate), 'MM-dd-yyyy h:mm a')} onChange={editDueDateHandler} /> */}
             <button type="submit">Save</button>
             <button onClick={onCancel}>Cancel</button>
         </form>
