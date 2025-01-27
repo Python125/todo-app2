@@ -17,8 +17,11 @@ function EditTodo({ todo, onSave, onCancel }) {
         e.preventDefault();
         if (!editValue.trim()) return; // This makes sure that their are characters in the input field
         if (!editDueDate.trim()) return;
-        onSave(todo.id, editValue, editDueDate.toLocaleString());
-        console.log(editDueDate);
+
+        const dueDateString = new Date(editDueDate);
+
+        onSave(todo.id, editValue, dueDateString.toLocaleString());
+        console.log(dueDateString);
     }
 
     return (
