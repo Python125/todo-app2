@@ -20,7 +20,7 @@ function EditTodo({ todo, onSave, onCancel }) {
 
         const dueDateString = new Date(editDueDate);
 
-        onSave(todo.id, editValue, dueDateString.toLocaleString());
+        onSave(todo.id, editValue, dueDateString.toLocaleString('en-US', { timeZone: 'America/New_York' }));
         console.log(dueDateString);
     }
 
