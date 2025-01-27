@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 
 function EditTodo({ todo, onSave, onCancel }) {
     const [editValue, setEditValue] = useState(todo.name);
-    const [editDueDate, setEditDueDate] = useState(format(new Date(todo.dueDate), 'MM-dd-yyyy h:mm a')).toLocaleString();
+    const [editDueDate, setEditDueDate] = useState(format(new Date(todo.dueDate), 'MM-dd-yyyy h:mm a'));
 
     const editTodo = (e) => {
         setEditValue(e.target.value);
