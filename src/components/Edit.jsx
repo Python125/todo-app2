@@ -15,7 +15,7 @@ function EditTodo({ todo, onSave, onCancel }) {
 
     const submitEditedTodo = (e) => {
         e.preventDefault();
-        if (!editValue.trim()) return; // This makes sure that their are characters in the input field
+        if (!editValue.trim()) return;
         if (!editDueDate.trim()) return;
         onSave(todo.id, editValue, editDueDate);
         console.log(editDueDate);
