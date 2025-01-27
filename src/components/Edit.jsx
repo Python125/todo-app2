@@ -19,9 +19,10 @@ function EditTodo({ todo, onSave, onCancel }) {
         if (!editDueDate.trim()) return;
 
         const dueDateString = new Date(editDueDate);
+        const userDate = new Intl.DateTimeFormat('en-US', { dateStyle: 'short', timeStyle: 'short', timeZone: 'America/New_York', hour12: true }).format(dueDateString);
 
-        onSave(todo.id, editValue, dueDateString.toLocaleString('en-US', { timeZone: 'America/New_York' }));
-        console.log(dueDateString);
+        onSave(todo.id, editValue, dueDateString, userDate);
+        console.log(userDate);
     }
 
     return (
