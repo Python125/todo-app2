@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { format } from 'date-fns';
-import { formatInTimeZone } from 'date-fns-tz';
+//import { formatInTimeZone } from 'date-fns-tz';
 
 function EditTodo({ todo, onSave, onCancel }) {
     const [editValue, setEditValue] = useState(todo.name);
@@ -29,7 +29,7 @@ function EditTodo({ todo, onSave, onCancel }) {
         <form onSubmit={submitEditedTodo}>
             <input type="text" value={editValue} onChange={editTodo} />
             <input value={editDueDate} onChange={editDueDateHandler} />
-            <div>{new Date(editDueDate).toLocaleString(formatInTimeZone)}</div>
+            <div>{new Date(editDueDate).toLocaleString()}</div>
             <button type="submit">Save</button>
             <button onClick={onCancel}>Cancel</button>
         </form>
