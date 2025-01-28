@@ -19,15 +19,16 @@ function EditTodo({ todo, onSave, onCancel }) {
         if (!editValue.trim()) return; // This makes sure that their are characters in the input field
         if (!editDueDate.trim()) return;
 
-        onSave(todo.id, editValue, editDueDate);
-        console.log(editDueDate);
+        //const dueDateString = new Date(editDueDate);
+
+        onSave(todo.id, editValue, dueDateString);
+        console.log(dueDateString);
     }
 
     return (
         <form onSubmit={submitEditedTodo}>
             <input type="text" value={editValue} onChange={editTodo} />
-            <input value={editDueDate} onChange={editDueDateHandler} />
-            <div>{new Date(editDueDate).toLocaleString()}</div>
+            <input value={new Date(editDueDate).toLocaleString()} onChange={editDueDateHandler} />
             <button type="submit">Save</button>
             <button onClick={onCancel}>Cancel</button>
         </form>
