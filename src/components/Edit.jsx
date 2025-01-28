@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { format } from 'date-fns';
-//import { formatInTimeZone } from 'date-fns-tz';
+// import { formatInTimeZone } from 'date-fns-tz';
 
 function EditTodo({ todo, onSave, onCancel }) {
     const [editValue, setEditValue] = useState(todo.name);
@@ -19,10 +19,8 @@ function EditTodo({ todo, onSave, onCancel }) {
         if (!editValue.trim()) return; // This makes sure that their are characters in the input field
         if (!editDueDate.trim()) return;
 
-        const dueDateString = new Date(editDueDate);
-
-        onSave(todo.id, editValue, dueDateString);
-        console.log(dueDateString);
+        onSave(todo.id, editValue, editDueDate);
+        console.log(editDueDate);
     }
 
     return (
