@@ -27,7 +27,7 @@ function EditTodo({ todo, onSave, onCancel }) {
     return (
         <form onSubmit={submitEditedTodo}>
             <input type="text" value={editValue} onChange={editTodo} />
-            <input value={editDueDate} onChange={editDueDateHandler} />
+            <input value={editDueDate.toLocaleString()} onChange={editDueDateHandler} />
             <button type="submit">Save</button>
             <button onClick={onCancel}>Cancel</button>
         </form>
