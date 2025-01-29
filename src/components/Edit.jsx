@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { format } from 'date-fns';
 
 function EditTodo({ todo, onSave, onCancel }) {
     const [editValue, setEditValue] = useState(todo.name);
-    const [editDueDate, setEditDueDate] = useState(format(new Date(todo.dueDate), 'MM-dd-yyyy h:mm a'));
+    const [editDueDate, setEditDueDate] = useState(new Date(todo.dueDate));
 
     const editTodo = (e) => {
         setEditValue(e.target.value);
