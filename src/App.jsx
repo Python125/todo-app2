@@ -4,10 +4,12 @@ import axios from 'axios';
 import CompletedList from './components/CompletedList';
 import EditTodo from './components/Edit';
 import OverdueList from './components/OverdueList';
+import { format } from 'date-fns';
 import { DateTimePicker } from '@mantine/dates';
 import { MantineProvider } from '@mantine/core';
+import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
-import { format } from 'date-fns';
+
 const apiURL = import.meta.env.VITE_API_URL;
 console.log(`API URL: ${apiURL}`);
 
@@ -36,7 +38,7 @@ function TodoList() {
 
     const interval = setInterval(() => {
       fetchTodos();
-    }, 1000);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, []);
@@ -154,32 +156,32 @@ function TodoList() {
 
   return (
     <MantineProvider>
-      <div>
-      <h1>Todo List</h1>
-      <form onSubmit={submitTodo}>
-        <input type="text" value={todoInput} onChange={addTodo} />
-        <DateTimePicker onChange={(newDate) => setCalendarDate(newDate)} placeholder='Pick date and time' />
-        <button type="submit">Add Todo</button>
-      </form>
-      <h5>Incomplete</h5>
-      <ul>
-        {incompleteTodo.map((todo) => (
-          <li key={todo.id}>
-            {editId === todo.id ? (
-              <EditTodo todo={todo} onSave={updateTodo} onCancel={() => setEditId(null)} />
-            ) : (
-              <>
-                {todo.name} - Due: {format(new Date(todo.dueDate), 'MM-dd-yyyy h:mm a')}
-                <button onClick={() => setEditId(todo.id)}>Edit</button>
-                <button onClick={() => deleteTodo(todo.id)}>Delete</button>
-                <button onClick={() => completeTodo(todo.id)}>Complete</button>
-              </>
-            )}
-          </li>
-        ))}
-      </ul>
-      <CompletedList todos={todos} deleteTodo={deleteTodo} undoCompletedTodo={undoCompletedTodo} />
-      <OverdueList todos={todos.filter(todo => todo.overDue && !todo.completed)} />
+      <div style={{ backgroundColor: 'lightblue' }}>
+        <h1>Todo List</h1>
+        <form onSubmit={submitTodo}>
+          <input type="text" value={todoInput} onChange={addTodo} />
+          <DateTimePicker onChange={(newDate) => setCalendarDate(newDate)} placeholder='Pick date and time' />
+          <button type="submit">Add Todo</button>
+        </form>
+        <h5>Incomplete</h5>
+        <ul>
+          {incompleteTodo.map((todo) => (
+            <li key={todo.id}>
+              {editId === todo.id ? (
+                <EditTodo todo={todo} onSave={updateTodo} onCancel={() => setEditId(null)} />
+              ) : (
+                <>
+                  {todo.name} - Due: {format(new Date(todo.dueDate), 'MM-dd-yyyy h:mm a')}
+                  <button onClick={() => setEditId(todo.id)}>Edit</button>
+                  <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+                  <button onClick={() => completeTodo(todo.id)}>Complete</button>
+                </>
+              )}
+            </li>
+          ))}
+        </ul>
+        <CompletedList todos={todos} deleteTodo={deleteTodo} undoCompletedTodo={undoCompletedTodo} />
+        <OverdueList todos={todos.filter(todo => todo.overDue && !todo.completed)} />
     </div>
     </MantineProvider>
   )
