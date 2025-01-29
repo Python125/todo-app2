@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 function EditTodo({ todo, onSave, onCancel }) {
     const [editValue, setEditValue] = useState(todo.name);
-    const [editDueDate, setEditDueDate] = useState(new Date(todo.dueDate).toISOString());
+    const [editDueDate, setEditDueDate] = useState(new Date(todo.dueDate));
 
     const editTodo = (e) => {
         setEditValue(e.target.value);
@@ -17,13 +17,10 @@ function EditTodo({ todo, onSave, onCancel }) {
         if (!editValue.trim()) return; // This makes sure that their are characters in the input field
         if (!editDueDate) return;
 
-        const dueDateString = new Date(editDueDate);
-        const userDate = new Intl.DateTimeFormat('en-US', { dateStyle: 'short', timeStyle: 'short', timeZone: 'America/New_York', hour12: true }).format(dueDateString);
-    
-
-        onSave(todo.id, editValue, userDate);
-        console.log(userDate);
+        onSave(todo.id, editValue, editDueDate);
+        console.log(editDueDate);
     }
+
     return (
         <form onSubmit={submitEditedTodo}>
             <input type="text" value={editValue} onChange={editTodo} />
