@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { format } from 'date-fns';
 
 function EditTodo({ todo, onSave, onCancel }) {
     const [editValue, setEditValue] = useState(todo.name);
-    const [editDueDate, setEditDueDate] = useState(new Date(todo.dueDate));
+    const [editDueDate, setEditDueDate] = useState(format(new Date(todo.dueDate), 'MM-dd-yyyy h:mm a'));
 
     const editTodo = (e) => {
         setEditValue(e.target.value);
@@ -15,18 +16,19 @@ function EditTodo({ todo, onSave, onCancel }) {
     const submitEditedTodo = (e) => {
         e.preventDefault();
         if (!editValue.trim()) return; // This makes sure that their are characters in the input field
-        if (!editDueDate) return;
+        if (!editDueDate.trim()) return;
 
-        const formattedDueDate = new Intl.DateTimeFormat('en-US', { dateStyle: 'short', timeStyle: 'short', timeZone: 'America/New_York' });
+        const dueDateString = new Date(editDueDate);
+        const userDate = new Intl.DateTimeFormat('en-US', { dateStyle: 'short', timeStyle: 'short', timeZone: 'America/New_York', hour12: true }).format(dueDateString);
 
-        onSave(todo.id, editValue, editDueDate);
-        console.log(editDueDate);
+        onSave(todo.id, editValue, dueDateString, userDate);
+        console.log(userDate);
     }
 
     return (
         <form onSubmit={submitEditedTodo}>
             <input type="text" value={editValue} onChange={editTodo} />
-            <input value={editDueDate.toLocaleString()} onChange={editDueDateHandler} />
+            <input value={editDueDate} onChange={editDueDateHandler} />
             <button type="submit">Save</button>
             <button onClick={onCancel}>Cancel</button>
         </form>
