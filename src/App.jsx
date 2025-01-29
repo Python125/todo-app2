@@ -17,9 +17,8 @@ function TodoList() {
   const [todos, setTodos] = useState([]);
   const [todoInput, setTodoInput] = useState('');
   const [editId, setEditId] = useState(null);
-
   const [dueDate, setDueDate] = useState('');
-  const [calendarDate, setCalendarDate] = useState(new Date());
+  const [calendarDate, setCalendarDate] = useState(null);
 
   useEffect(() => {
     const fetchTodos = async () => {
@@ -79,6 +78,7 @@ function TodoList() {
       setTodos([...todos, response.data]);
       setTodoInput('');
       setDueDate('');
+      setCalendarDate(null);
     })
   }
 
@@ -159,8 +159,10 @@ function TodoList() {
       <div style={{ backgroundColor: 'lightblue' }}>
         <h1>Todo List</h1>
         <form onSubmit={submitTodo}>
-          <input type="text" value={todoInput} onChange={addTodo} />
-          <DateTimePicker onChange={(newDate) => setCalendarDate(newDate)} placeholder='Pick date and time' />
+          <div style={{ width: '250px', margin: 'auto' }}>
+            <input style={{ width: '100%' }} type="text" value={todoInput} onChange={addTodo} />
+            <DateTimePicker value={calendarDate} onChange={(newDate) => setCalendarDate(newDate)} onCancel={() => setCalendarDate(null)} placeholder='Pick date and time' />
+          </div>
           <button type="submit">Add Todo</button>
         </form>
         <h5>Incomplete</h5>
