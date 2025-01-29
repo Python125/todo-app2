@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { format } from 'date-fns';
 
 function EditTodo({ todo, onSave, onCancel }) {
     const [editValue, setEditValue] = useState(todo.name);
@@ -15,14 +14,11 @@ function EditTodo({ todo, onSave, onCancel }) {
 
     const submitEditedTodo = (e) => {
         e.preventDefault();
-
-        const formattedDate = format(editDueDate, 'MM-dd-yyyy h:mm a');
-
         if (!editValue.trim()) return; // This makes sure that their are characters in the input field
-        if (!editDueDate.trim()) return;
+        if (!editDueDate) return;
 
-        onSave(todo.id, editValue, formattedDate);
-        console.log(formattedDate);
+        onSave(todo.id, editValue, editDueDate);
+        console.log(editDueDate);
     }
 
     return (
